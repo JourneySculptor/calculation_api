@@ -1,6 +1,6 @@
 # Import necessary modules
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import logging
 import math
 
@@ -12,12 +12,12 @@ logging.basicConfig(level=logging.INFO)
 
 # Define request model for input validation
 class CalculationRequest(BaseModel):
-    number1: float
-    number2: float
+    number1: float = Field(gt=-1e6, lt=1e6, description="Value must be between -1,000,000 and 1,000,000")
+    number2: float = Field(gt=-1e6, lt=1e6, description="Value must be between -1,000,000 and 1,000,000")
 
 # Define request model for operations requiring a single number
 class SingleNumberRequest(BaseModel):
-    number1: float
+    number1: float = Field(gt=0, lt=1e6, description="Value must be between 0 and 1,000,000")
 
 # Initialize history list
 history = []
@@ -26,57 +26,46 @@ history = []
 def add_to_history(operation: str, result: float):
     history.append({"operation": operation, "result": result})
 
+# Unified function for calculations and logging
+def calculate_and_log(operation: str, func, *args):
+    try:
+        result = func(*args)
+        logging.info(f"{operation.capitalize()}: {args} = {result}")
+        add_to_history(operation, result)
+        return {"operation": operation, "result": result}
+    except Exception as e:
+        logging.error(f"Error during {operation}: {e}")
+        return {"operation": operation, "error": str(e)}
+
 # Endpoint for addition
 @app.post("/add")
 def add_numbers(request: CalculationRequest):
-    result = request.number1 + request.number2
-    logging.info(f"Addition: {request.number1} + {request.number2} = {result}")
-    add_to_history("addition", result)
-    return {"operation": "addition", "result": result}
+    return calculate_and_log("addition", lambda x, y: x +y, request.number1, request.number2 )
 
 # Endpoint for subtraction
 @app.post("/subtract")
 def subtract_numbers(request: CalculationRequest):
     result = request.number1 - request.number2
-    logging.info(f"Subtraction: {request.number1} - {request.number2} = {result}")
-    add_to_history("subtract", result)
-    return {"operation": "subtraction", "result": result}
+    return calculate_and_log("subtraction", lambda x, y: x - y, request.number1, request.number2)
 
 # Endpoint for multiplication
 @app.post("/multiply")
 def multiply_numbers(request: CalculationRequest):
-    result = request.number1 * request.number2
-    logging.info(f"Multiplication: {request.number1} * {request.number2} = {result}")
-    add_to_history("multiply", result)
-    return {"operation": "multiplication", "result": result}
+    return calculate_and_log("multiplication", lambda x, y: x * y, request.number1, request.number2)
 
 # Endpoint for division
 @app.post("/divide")
 def divide_numbers(request: CalculationRequest):
-    if request.number2 == 0:
-        logging.warning("Division by zero attempted.")
-        return {"operation": "division", "error": "Division by zero is not allowed"}
-    result = request.number1 / request.number2
-    logging.info(f"Division: {request.number1} / {request.number2} = {result}")
-    add_to_history("division", result)
-    return {"operation": "division", "result": result}
+    return calculate_and_log("division", lambda x, y: x / y if y != 0 else float('inf'), request.number1, request.number2)
+
 
 @app.post("/power")
 def power_numbers(request: CalculationRequest):
-    result = request.number1 ** request.number2
-    logging.info(f"Power: {request.number1} ** {request.number2} = {result}")
-    add_to_history("power", result)
-    return {"operation": "power", "result": result}
+    return calculate_and_log("power", lambda x, y: x ** y, request.number1, request.number2)
 
 @app.post("/sqrt")
 def square_root(request: SingleNumberRequest):
-    if request.number1 <0:
-        logging.warning("Square root of negative number attempted.")
-        return {"operation": "sqrt", "error": "Square root of negative number is not allowed"}
-    result = math.sqrt(request.number1)
-    logging.info(f"Square root: sqrt({request.number1}) = {result}")
-    add_to_history("square_root", result)
-    return {"operation": "square_root", "result": result}
+    return calculate_and_log("square_root", math.sqrt, request.number1)
 
 # Endpoint to retrieve calculation history
 @app.get("/history")
