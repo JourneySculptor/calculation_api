@@ -1,3 +1,4 @@
+
 # Calculation API
 
 A simple API for basic math operations built with FastAPI.
@@ -23,6 +24,25 @@ A simple API for basic math operations built with FastAPI.
   }
   ```
 
+### Subtraction
+- **URL**: `/subtract`
+- **Method**: POST
+- **Description**: Subtract two numbers.
+- **Request Example**:
+  ```json
+  {
+      "number1": 5,
+      "number2": 3
+  }
+  ```
+- **Response Example**:
+  ```json
+  {
+      "operation": "subtraction",
+      "result": 2
+  }
+  ```
+
 ### Multiplication
 - **URL**: `/multiply`
 - **Method**: POST
@@ -42,16 +62,88 @@ A simple API for basic math operations built with FastAPI.
   }
   ```
 
-### Error Responses
-- **Error Example**:
+### Division
+- **URL**: `/divide`
+- **Method**: POST
+- **Description**: Divide two numbers.
+- **Request Example**:
   ```json
   {
-      "detail": [
-          {
-              "loc": ["body", "number1"],
-              "msg": "field required",
-              "type": "value_error.missing"
-          }
+      "number1": 6,
+      "number2": 3
+  }
+  ```
+- **Response Example**:
+  ```json
+  {
+      "operation": "division",
+      "result": 2.0
+  }
+  ```
+
+- **Error Example** (Division by zero):
+  ```json
+  {
+      "operation": "division",
+      "error": "Division by zero is not allowed"
+  }
+  ```
+
+### Power
+- **URL**: `/power`
+- **Method**: POST
+- **Description**: Raise number1 to the power of number2.
+- **Request Example**:
+  ```json
+  {
+      "number1": 2,
+      "number2": 3
+  }
+  ```
+- **Response Example**:
+  ```json
+  {
+      "operation": "power",
+      "result": 8
+  }
+  ```
+
+### Square Root
+- **URL**: `/sqrt`
+- **Method**: POST
+- **Description**: Compute the square root of number1.
+- **Request Example**:
+  ```json
+  {
+      "number1": 9
+  }
+  ```
+- **Response Example**:
+  ```json
+  {
+      "operation": "square_root",
+      "result": 3.0
+  }
+  ```
+
+- **Error Example** (Square root of a negative number):
+  ```json
+  {
+      "operation": "sqrt",
+      "error": "Square root of negative number is not allowed"
+  }
+  ```
+
+### Calculation History
+- **URL**: `/history`
+- **Method**: GET
+- **Description**: Retrieve the history of all calculations.
+- **Response Example**:
+  ```json
+  {
+      "history": [
+          {"operation": "addition", "result": 8},
+          {"operation": "subtraction", "result": 2}
       ]
   }
   ```
