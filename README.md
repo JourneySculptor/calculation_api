@@ -1,20 +1,44 @@
 
 # Calculation API
 
-An enhanced API for performing basic and advanced math operations, built using FastAPI. It includes detailed logging, input validation, and calculation history tracking.
+An enhanced API for performing basic and advanced math operations, built using FastAPI. It includes detailed logging, input validation, calculation history tracking, and user authentication.
 
 ## Features
 - **Input Validation**: Ensures correctness and prevents invalid values.
 - **Error Handling**: Handles edge cases like division by zero or invalid inputs gracefully.
 - **Calculation History**: Tracks and provides a history of all calculations performed during the application's runtime.
+- **User Authentication**: Protects endpoints by requiring a valid token for access.
 - **Comprehensive API Documentation**: Available via FastAPI's Swagger UI.
 
 ## Endpoints
+
+### User Authentication
+
+#### Login
+- **URL**: `/login`
+- **Method**: POST
+- **Description**: Authenticate users using form data (username and password).
+- **Request Example**:
+  ```
+  username=user
+  password=pass
+  ```
+- **Response Example**:
+  ```json
+  {
+      "message": "Login successful!",
+      "token": "dummy-token"
+  }
+  ```
 
 ### Addition
 - **URL**: `/add`
 - **Method**: POST
 - **Description**: Add two numbers.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Model**: `CalculationRequest` (includes `number1` and `number2` as floats).
 - **Request Example**:
   ```json
@@ -35,6 +59,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/subtract`
 - **Method**: POST
 - **Description**: Subtract two numbers.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Example**:
   ```json
   {
@@ -54,6 +82,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/multiply`
 - **Method**: POST
 - **Description**: Multiply two numbers.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Example**:
   ```json
   {
@@ -73,6 +105,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/divide`
 - **Method**: POST
 - **Description**: Divide two numbers.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Example**:
   ```json
   {
@@ -99,6 +135,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/power`
 - **Method**: POST
 - **Description**: Raise `number1` to the power of `number2`.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Example**:
   ```json
   {
@@ -118,6 +158,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/sqrt`
 - **Method**: POST
 - **Description**: Compute the square root of a single number (`number1`).
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Request Model**: `SingleNumberRequest` (includes `number1` as a positive float).
 - **Request Example**:
   ```json
@@ -136,7 +180,7 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "square_root",
-      "error": "Square root of negative number is not allowed"
+      "error": "Cannot calculate the square root of a negative number"
   }
   ```
 
@@ -144,6 +188,10 @@ An enhanced API for performing basic and advanced math operations, built using F
 - **URL**: `/history`
 - **Method**: GET
 - **Description**: Retrieve a history of all calculations performed during the application's runtime.
+- **Headers**:
+  ```
+  Authorization: dummy-token
+  ```
 - **Response Example**:
   ```json
   {
@@ -159,7 +207,7 @@ An enhanced API for performing basic and advanced math operations, built using F
 ### Install Dependencies
 Run the following command to install the required dependencies:
 ```bash
-pip install -r requirements.txt
+pip install fastapi uvicorn python-multipart
 ```
 
 ### Run the Application
@@ -180,8 +228,9 @@ http://127.0.0.1:8000/docs
 - `pydantic`: For data validation and settings management.
 - `math`: Python's standard library for mathematical operations.
 - `logging`: Python's standard library for logging and debugging.
+- `python-multipart`: Required for handling form data.
 
 ## Future Improvements
-- Add user authentication for personalized history tracking.
 - Expand API to include advanced mathematical functions like trigonometry.
 - Implement database integration for persistent storage of history.
+- Add role-based user permissions for enhanced security.
