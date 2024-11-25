@@ -1,12 +1,14 @@
 
 # Calculation API
 
-An enhanced API for performing basic and advanced math operations, built using FastAPI. It includes detailed logging, input validation, calculation history tracking, and user authentication.
+An enhanced API for performing basic and advanced math operations, built using FastAPI. It includes detailed logging, 
+input validation, calculation history tracking with timestamps, and user authentication.
 
 ## Features
 - **Input Validation**: Ensures correctness and prevents invalid values.
 - **Error Handling**: Handles edge cases like division by zero or invalid inputs gracefully.
-- **Calculation History**: Tracks and provides a history of all calculations performed during the application's runtime.
+- **Calculation History with Timestamps**: Tracks and provides a history of all calculations performed during 
+  the application's runtime, including the time each operation was performed (Format: `YYYY-MM-DD HH:MM:SS`).
 - **User Authentication**: Protects endpoints by requiring a valid token for access.
 - **Comprehensive API Documentation**: Available via FastAPI's Swagger UI.
 
@@ -17,7 +19,7 @@ An enhanced API for performing basic and advanced math operations, built using F
 #### Login
 - **URL**: `/login`
 - **Method**: POST
-- **Description**: Authenticate users using form data (username and password).
+- **Description**: Authenticate users using form data (username and password) to obtain a token.
 - **Request Example**:
   ```
   username=user
@@ -34,7 +36,7 @@ An enhanced API for performing basic and advanced math operations, built using F
 ### Addition
 - **URL**: `/add`
 - **Method**: POST
-- **Description**: Add two numbers.
+- **Description**: Adds two numbers together.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -51,14 +53,15 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "addition",
-      "result": 8
+      "result": 8,
+      "timestamp": "2024-11-25 15:25:24"
   }
   ```
 
 ### Subtraction
 - **URL**: `/subtract`
 - **Method**: POST
-- **Description**: Subtract two numbers.
+- **Description**: Subtracts the second number from the first.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -74,14 +77,15 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "subtraction",
-      "result": 3
+      "result": 3,
+      "timestamp": "2024-11-25 15:25:36"
   }
   ```
 
 ### Multiplication
 - **URL**: `/multiply`
 - **Method**: POST
-- **Description**: Multiply two numbers.
+- **Description**: Multiplies two numbers together.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -97,14 +101,15 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "multiplication",
-      "result": 20
+      "result": 20,
+      "timestamp": "2024-11-25 15:25:38"
   }
   ```
 
 ### Division
 - **URL**: `/divide`
 - **Method**: POST
-- **Description**: Divide two numbers.
+- **Description**: Divides the first number by the second. Raises an error if the divisor is zero.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -120,21 +125,22 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "division",
-      "result": 5.0
+      "result": 5.0,
+      "timestamp": "2024-11-25 15:25:40"
   }
   ```
 - **Error Example** (Division by zero):
   ```json
   {
       "operation": "division",
-      "error": "Division by zero is not allowed"
+      "error": "Division by zero is not allowed."
   }
   ```
 
 ### Power
 - **URL**: `/power`
 - **Method**: POST
-- **Description**: Raise `number1` to the power of `number2`.
+- **Description**: Raises the first number to the power of the second.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -150,14 +156,15 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "power",
-      "result": 8
+      "result": 8,
+      "timestamp": "2024-11-25 15:25:42"
   }
   ```
 
 ### Square Root
 - **URL**: `/sqrt`
 - **Method**: POST
-- **Description**: Compute the square root of a single number (`number1`).
+- **Description**: Calculates the square root of a single number. Only positive numbers are allowed.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -173,21 +180,22 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "operation": "square_root",
-      "result": 4.0
+      "result": 4.0,
+      "timestamp": "2024-11-25 15:25:44"
   }
   ```
 - **Error Example** (Square root of a negative number):
   ```json
   {
       "operation": "square_root",
-      "error": "Cannot calculate the square root of a negative number"
+      "error": "Cannot calculate the square root of a negative number."
   }
   ```
 
 ### Calculation History
 - **URL**: `/history`
 - **Method**: GET
-- **Description**: Retrieve a history of all calculations performed during the application's runtime.
+- **Description**: Retrieves the calculation history along with timestamps.
 - **Headers**:
   ```
   Authorization: dummy-token
@@ -196,19 +204,20 @@ An enhanced API for performing basic and advanced math operations, built using F
   ```json
   {
       "history": [
-          {"operation": "addition", "result": 8},
-          {"operation": "division", "result": 5.0}
+          {"operation": "addition", "result": 8, "timestamp": "2024-11-25 15:25:24"},
+          {"operation": "division", "result": 5.0, "timestamp": "2024-11-25 15:25:40"}
       ]
   }
   ```
 
 ## Setup
 
-### Install Dependencies
-Run the following command to install the required dependencies:
+### Install Dependencies Using requirements.txt
+Run the following command to install all required dependencies:
 ```bash
-pip install fastapi uvicorn python-multipart
+pip install -r requirements.txt
 ```
+Make sure that the `requirements.txt` file is located in the root directory of the project.
 
 ### Run the Application
 Use the following command to start the FastAPI application:
