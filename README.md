@@ -1,14 +1,16 @@
 
 # Calculation API
 
-An enhanced API for performing basic and advanced math operations, built using FastAPI. It includes detailed logging, 
-input validation, calculation history tracking with timestamps, and user authentication.
+An enhanced API for performing basic and advanced math operations, built using FastAPI. 
+It includes detailed logging, input validation, calculation history tracking with timestamps, 
+and user authentication.
 
 ## Features
+
 - **Input Validation**: Ensures correctness and prevents invalid values.
 - **Error Handling**: Handles edge cases like division by zero or invalid inputs gracefully.
-- **Calculation History with Timestamps**: Tracks and provides a history of all calculations performed during 
-  the application's runtime, including the time each operation was performed (Format: `YYYY-MM-DD HH:MM:SS`).
+- **Calculation History with Timestamps**: Tracks and provides a history of all calculations performed 
+  during the application's runtime, including the time each operation was performed (Format: `YYYY-MM-DD HH:MM:SS`).
 - **User Authentication**: Protects endpoints by requiring a valid token for access.
 - **Comprehensive API Documentation**: Available via FastAPI's Swagger UI.
 
@@ -21,9 +23,11 @@ input validation, calculation history tracking with timestamps, and user authent
 - **Method**: POST
 - **Description**: Authenticate users using form data (username and password) to obtain a token.
 - **Request Example**:
-  ```
-  username=user
-  password=pass
+  ```json
+  {
+      "username": "user",
+      "password": "pass"
+  }
   ```
 - **Response Example**:
   ```json
@@ -33,7 +37,11 @@ input validation, calculation history tracking with timestamps, and user authent
   }
   ```
 
-### Addition
+---
+
+### Basic Operations
+
+#### Addition
 - **URL**: `/add`
 - **Method**: POST
 - **Description**: Adds two numbers together.
@@ -54,11 +62,11 @@ input validation, calculation history tracking with timestamps, and user authent
   {
       "operation": "addition",
       "result": 8,
-      "timestamp": "2024-11-25 15:25:24"
+      "timestamp": "2024-11-27 21:00:00"
   }
   ```
 
-### Subtraction
+#### Subtraction
 - **URL**: `/subtract`
 - **Method**: POST
 - **Description**: Subtracts the second number from the first.
@@ -66,6 +74,7 @@ input validation, calculation history tracking with timestamps, and user authent
   ```
   Authorization: dummy-token
   ```
+- **Request Model**: `CalculationRequest` (includes `number1` and `number2` as floats).
 - **Request Example**:
   ```json
   {
@@ -78,11 +87,11 @@ input validation, calculation history tracking with timestamps, and user authent
   {
       "operation": "subtraction",
       "result": 3,
-      "timestamp": "2024-11-25 15:25:36"
+      "timestamp": "2024-11-27 21:10:00"
   }
   ```
 
-### Multiplication
+#### Multiplication
 - **URL**: `/multiply`
 - **Method**: POST
 - **Description**: Multiplies two numbers together.
@@ -90,6 +99,7 @@ input validation, calculation history tracking with timestamps, and user authent
   ```
   Authorization: dummy-token
   ```
+- **Request Model**: `CalculationRequest` (includes `number1` and `number2` as floats).
 - **Request Example**:
   ```json
   {
@@ -102,11 +112,11 @@ input validation, calculation history tracking with timestamps, and user authent
   {
       "operation": "multiplication",
       "result": 20,
-      "timestamp": "2024-11-25 15:25:38"
+      "timestamp": "2024-11-27 21:20:00"
   }
   ```
 
-### Division
+#### Division
 - **URL**: `/divide`
 - **Method**: POST
 - **Description**: Divides the first number by the second. Raises an error if the divisor is zero.
@@ -114,6 +124,7 @@ input validation, calculation history tracking with timestamps, and user authent
   ```
   Authorization: dummy-token
   ```
+- **Request Model**: `CalculationRequest` (includes `number1` and `number2` as floats).
 - **Request Example**:
   ```json
   {
@@ -125,8 +136,8 @@ input validation, calculation history tracking with timestamps, and user authent
   ```json
   {
       "operation": "division",
-      "result": 5.0,
-      "timestamp": "2024-11-25 15:25:40"
+      "result": 5,
+      "timestamp": "2024-11-27 21:30:00"
   }
   ```
 - **Error Example** (Division by zero):
@@ -137,7 +148,7 @@ input validation, calculation history tracking with timestamps, and user authent
   }
   ```
 
-### Power
+#### Power
 - **URL**: `/power`
 - **Method**: POST
 - **Description**: Raises the first number to the power of the second.
@@ -145,6 +156,7 @@ input validation, calculation history tracking with timestamps, and user authent
   ```
   Authorization: dummy-token
   ```
+- **Request Model**: `CalculationRequest` (includes `number1` and `number2` as floats).
 - **Request Example**:
   ```json
   {
@@ -157,11 +169,11 @@ input validation, calculation history tracking with timestamps, and user authent
   {
       "operation": "power",
       "result": 8,
-      "timestamp": "2024-11-25 15:25:42"
+      "timestamp": "2024-11-27 21:40:00"
   }
   ```
 
-### Square Root
+#### Square Root
 - **URL**: `/sqrt`
 - **Method**: POST
 - **Description**: Calculates the square root of a single number. Only positive numbers are allowed.
@@ -180,8 +192,8 @@ input validation, calculation history tracking with timestamps, and user authent
   ```json
   {
       "operation": "square_root",
-      "result": 4.0,
-      "timestamp": "2024-11-25 15:25:44"
+      "result": 4,
+      "timestamp": "2024-11-27 21:50:00"
   }
   ```
 - **Error Example** (Square root of a negative number):
@@ -192,7 +204,7 @@ input validation, calculation history tracking with timestamps, and user authent
   }
   ```
 
-### Calculation History
+#### Calculation History
 - **URL**: `/history`
 - **Method**: GET
 - **Description**: Retrieves the calculation history along with timestamps.
@@ -204,20 +216,21 @@ input validation, calculation history tracking with timestamps, and user authent
   ```json
   {
       "history": [
-          {"operation": "addition", "result": 8, "timestamp": "2024-11-25 15:25:24"},
-          {"operation": "division", "result": 5.0, "timestamp": "2024-11-25 15:25:40"}
+          {"operation": "addition", "result": 8, "timestamp": "2024-11-27 21:00:00"},
+          {"operation": "subtraction", "result": 3, "timestamp": "2024-11-27 21:10:00"}
       ]
   }
   ```
+
+---
 
 ## Setup
 
 ### Install Dependencies Using requirements.txt
 Run the following command to install all required dependencies:
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt 
 ```
-Make sure that the `requirements.txt` file is located in the root directory of the project.
 
 ### Run the Application
 Use the following command to start the FastAPI application:
@@ -225,7 +238,7 @@ Use the following command to start the FastAPI application:
 uvicorn main:app --reload
 ```
 
-### Open the API Documentation
+### Access the Documentation
 After running the application, open your browser and visit:
 ```text
 http://127.0.0.1:8000/docs

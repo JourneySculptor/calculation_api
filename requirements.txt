@@ -1,11 +1,4 @@
 fastapi
 uvicorn
 pydantic
-
-POST http://127.0.0.1:8000/multiply
-Content-Type: application/json
-
-{
-    "number1": 5,
-    "number2": 3
-}
+python-multipart
