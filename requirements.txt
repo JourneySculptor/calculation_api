@@ -2,3 +2,7 @@ fastapi
 uvicorn
 pydantic
 python-multipart
+PyJWT
+python-dotenv
+pytest
+httpx
