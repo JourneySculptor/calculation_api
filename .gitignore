@@ -1,0 +1,9 @@
+# Ignore environment variables
+.env
+
+# Python specific ignores
+__pycache__/
+*.py[cod]
+
+# Testing cache
+.pytest_cache/
